@@ -1,0 +1,24 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Build output
+bin/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# env
+.env
+config.yaml
+
+# logs
+*.log
+
+# Go
+/vendor/

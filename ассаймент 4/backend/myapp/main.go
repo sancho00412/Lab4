@@ -3,18 +3,23 @@ package main
 import (
 	"log"
 	"net/http"
-
-	"myapp/handlers" // Импортируем пакет с обработчиками
+	"os"
 
 	"github.com/gorilla/mux"
 )
 
 func main() {
+	if os.Getenv("JWT_SECRET") == "" {
+		log.Fatal("JWT_SECRET is not set in environment")
+	}
+
 	r := mux.NewRouter()
+	r.Use(RequestLoggingMiddleware)
+	r.Use(SecurityHeadersMiddleware)
 
-	// Обработчик для логина
-	r.HandleFunc("/login", handlers.LoginHandler).Methods("POST")
+	r.HandleFunc("/login", LoginHandler).Methods("POST")
 
-	// Запуск HTTP-сервера
-	log.Fatal(http.ListenAndServe(":8080", r))
+	addr := ":8080"
+	log.Println("starting server on", addr)
+	log.Fatal(http.ListenAndServe(addr, r))
 }
